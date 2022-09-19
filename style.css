@@ -1,0 +1,37 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+hr {
+  width: 500px; 
+}
+
+#title {
+  font-size: 36px; 
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+#board {
+  width: 350px;
+  height: 420 px;
+  margin: 100px auto;
+  margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tile {
+  /* box */
+  border: 2px solid lightgrey;
+  background-color: white;
+
+  /* text */
+  color: black;
+  font-size: 36px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
