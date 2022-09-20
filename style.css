@@ -4,7 +4,7 @@ body {
 }
 
 hr {
-  width: 500px; 
+  width: auto; 
 }
 
 #title {
@@ -18,13 +18,14 @@ hr {
   height: 420 px;
   margin: 100px auto;
   margin-top: 3px;
+  margin-bottom: 3px;
   display: flex;
   flex-wrap: wrap;
 }
 
 .tile {
   /* box */
-  border: 2px solid lightgrey;
+  border: 1px solid gray;
   background-color: white;
 
   /* text */
