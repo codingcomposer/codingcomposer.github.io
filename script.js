@@ -80,7 +80,7 @@ function initialize() {
             keyup({code: "Enter"});
         }
         else{
-            keyup(e);
+            keyup({code: "Key" + e.target.textContent, key: e.target.textContent});
         }
     });
 }
@@ -309,3 +309,7 @@ function getRow(row) {
     return rowElements;
 };
 
+function closePopup()
+{
+    document.getElementById("popup").style.display = "none";
+}
