@@ -4,7 +4,7 @@ body {
 }
 
 hr {
-  width: auto; 
+  width: 100%; 
 }
 
 #title {
@@ -14,9 +14,7 @@ hr {
 }
 
 #board {
-  width: 350px;
-  height: 420 px;
-  margin: 100px auto;
+  margin: auto;
   margin-top: 3px;
   margin-bottom: 3px;
   display: flex;
