@@ -21,6 +21,26 @@ hr {
   flex-wrap: wrap;
 }
 
+#tutorial
+{
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin: auto;
+  background-color: white;
+  border : 1px solid black;
+  width:50%;
+  border-radius: 10px;
+  padding: 10px;
+  
+}
+
+img{
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0px;
+}
+
 .tile {
   /* box */
   border: 1px solid gray;

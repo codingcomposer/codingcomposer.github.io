@@ -10,12 +10,23 @@
     </head>
 <body>
     <h1 id="title"> 한글로 푸는 워들 </h1>
-    <hr>
-    <h1 id="answer"></h1>
     <br>
+    <div id="tutorial">
+        <button class="close-button" id="close-button" onclick="closePopup()" style="float: right">X</button>
+        <h1>플레이 방법</h1>
+        <img src="tutorial_blank.png" alt="tutorialBlank">
+        <p>직사각형 하나는 하나의 자모. 직사각형이 모이면 조합된 한글 한 글자.</p>
+        <p>자모의 개수에 맞고 사전에 있는 단어를 입력 후 Enter를 누르면 다음 그림과 같이 결과를 확인할 수 있습니다.</p>
+        <img src="tutorial_entered.png" alt="tutorialEntered">
+        <p>위의 정답은 '걷기'입니다. 해당 단어에 들어있으면서 위치가 같은 자모는 초록색, 위치만 다르면 빨간색, 포함되지 않은 자모이면 회색으로 표시됩니다. </p>
+        <p>6번만에 어떤 단어일지 맞추어보세요.</p>
+
+    </div>
     <div id="board">
         
     </div>
+    
+    <h1 id="answer"></h1>
     <div id="keyboard-cont">
         <div class="first-row">
             <button class="keyboard-button">ㅂ</button>
@@ -28,6 +39,7 @@
             <button class="keyboard-button">ㅑ</button>
             <button class="keyboard-button">ㅐ</button>
             <button class="keyboard-button">ㅔ</button>
+            <button class="keyboard-button">Del</button>
         </div>
         <div class="second-row">
             <button class="keyboard-button">ㅁ</button>
@@ -39,9 +51,10 @@
             <button class="keyboard-button">ㅓ</button>
             <button class="keyboard-button">ㅏ</button>
             <button class="keyboard-button">ㅣ</button>
+            <button class="keyboard-button">Enter</button>
         </div>
         <div class="third-row">
-            <button class="keyboard-button">Del</button>
+            <button class="keyboard-button">Shift</button>
             <button class="keyboard-button">ㅋ</button>
             <button class="keyboard-button">ㅌ</button>
             <button class="keyboard-button">ㅊ</button>
@@ -49,10 +62,10 @@
             <button class="keyboard-button">ㅠ</button>
             <button class="keyboard-button">ㅜ</button>
             <button class="keyboard-button">ㅡ</button>
-            <button class="keyboard-button">Enter</button>
         </div>
     </div>
     <script src="words.js"></script>
+    <script src="allWords.js"></script>
     <script src="script.js"></script>
     <script src="https://unpkg.com/hangul-js" type="text/javascript"></script>
 </body>

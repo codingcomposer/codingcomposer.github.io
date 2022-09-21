@@ -1,4 +1,4 @@
-let height = 5; // the number of tries.
+let height = 6; // the number of tries.
 let width;// Length of the combined hangul
 let disassembledWidth; // Length of the separate hangul
 
@@ -7,14 +7,11 @@ let row = 0; // current row; different from height.
 let gameOver = false;
 let word; // correct answer.
 // size of the square of the combined hangul.
-let squareSize = 90;
-let oneThirdSquare = squareSize / 3;
-let twoThirdSquare = squareSize / 3 * 2;
+let squareSize;
+let oneThirdSquare;
+let twoThirdSquare;
 let letterIndex = 0;
-
-window.onload = function() {
-    initialize();
-};
+let shiftPressed = false;
 
 function initialize() {
     // get answer
@@ -26,6 +23,11 @@ function initialize() {
     disassembledWidth = Hangul.disassemble(word).length;
 
     let spaceBetweenRects = 10;
+    
+    let screenWidth = window.innerWidth;
+    squareSize = (screenWidth * 0.2) / width - spaceBetweenRects;
+    oneThirdSquare = squareSize / 3;
+    twoThirdSquare = squareSize / 3 * 2;
     // find the element with the id board
     let board = document.getElementById('board');
     // set the height of the board
@@ -52,16 +54,17 @@ function initialize() {
                 // make a tile.
                 let tile = document.createElement('div');
                 tile.classList.add("tile");
+                
+                // append to the board
+                board.appendChild(tile);
+                tile.style.position = 'absolute';
                 tile.style.height = jamoRect[3].toString() + 'px';
                 tile.style.width = jamoRect[2].toString() + 'px';
-                tile.style.position = 'absolute';
                 tile.style.top = (offsetTop + combinedLettterCoordinate[1] + jamoRect[1]).toString() + 'px';
                 tile.style.left = (offsetLeft + combinedLettterCoordinate[0] + jamoRect[0]).toString() + 'px';
                 // set the id of the tile ; the id contains the row number and jamo index.
                 tile.id = r.toString() + "-" + jamoIndex.toString();
                 tile.innerText = "";
-                // append to the board
-                board.appendChild(tile);
                 jamoIndex++;
             }
         }
@@ -79,10 +82,36 @@ function initialize() {
         else if(e.target.textContent === "Enter") {
             keyup({code: "Enter"});
         }
+        else if(e.target.textContent === "Shift")
+        {
+            shiftPressed = !shiftPressed;
+            toggleKeyboardShift();
+
+        }
         else{
             keyup({code: "Key" + e.target.textContent, key: e.target.textContent});
         }
     });
+}
+
+function toggleKeyboardShift()
+{
+    // get the virtual keyboard
+    let keyboard = document.getElementById("keyboard-cont");
+    // from each key, get the text content, and toggle its double-single consonant state, and change the button text accordingly.
+    for(let i = 0; i < keyboard.children.length; i++)
+    {
+        let key = keyboard.children[i];
+        let text = key.textContent;
+        if(shiftPressed)
+        {
+            key.innerHTML = convertToDoubleConsonant(text);
+        }
+        else
+        {
+            key.innerHTML = convertToSingleConsonant(text);
+        }
+    }
 }
 
 function keyup(e) {
@@ -135,7 +164,7 @@ function checkGuess()
     }
     var disassembledStr = str;
     str = Hangul.assemble(str);
-    if(!WORDS.includes(str)) 
+    if(!ALL_WORDS.includes(str)) 
     {
         alert(str + "은 단어 목록에 없습니다.");
         return;
@@ -245,6 +274,28 @@ function isConsonant(letter) {
     return false;
 }
 
+function convertToDoubleConsonant(letter) {
+    switch(letter) {
+        case "ㄱ": return "ㄲ";
+        case "ㄷ": return "ㄸ";
+        case "ㅂ": return "ㅃ";
+        case "ㅅ": return "ㅆ";
+        case "ㅈ": return "ㅉ";
+        default: return letter;
+    }
+}
+
+function convertToSingleConsonant(letter) {
+    switch(letter) {
+        case "ㄲ": return "ㄱ";
+        case "ㄸ": return "ㄷ";
+        case "ㅃ": return "ㅂ";
+        case "ㅆ": return "ㅅ";
+        case "ㅉ": return "ㅈ";
+        default: return letter;
+    }
+}
+
 
 function isVowel(letter)
 {
@@ -311,5 +362,6 @@ function getRow(row) {
 
 function closePopup()
 {
-    document.getElementById("popup").style.display = "none";
+    document.getElementById("tutorial").style.display = "none";
+    initialize();
 }
