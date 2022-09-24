@@ -74,24 +74,6 @@ function initialize() {
 	document.addEventListener("keyup", (e) => {
         keyup(e);
     });       
-    // 가상 키보드 키 입력
-    document.getElementById("keyboard-cont").addEventListener("click", (e) => {
-        if(e.target.textContent === "Del") {
-            keyup({code: "Backspace"});
-        }
-        else if(e.target.textContent === "Enter") {
-            keyup({code: "Enter"});
-        }
-        else if(e.target.textContent === "Shift")
-        {
-            shiftPressed = !shiftPressed;
-            toggleKeyboardShift();
-
-        }
-        else{
-            keyup({code: "Key" + e.target.textContent, key: e.target.textContent});
-        }
-    });
 }
 
 function toggleKeyboardShift()
@@ -101,16 +83,48 @@ function toggleKeyboardShift()
     // from each key, get the text content, and toggle its double-single consonant state, and change the button text accordingly.
     for(let i = 0; i < keyboard.children.length; i++)
     {
-        let key = keyboard.children[i];
-        let text = key.textContent;
+        let row = keyboard.children[i];
+        // each key in the row
+        for(let j = 0; j < row.children.length; j++)
+        {
+            let key = row.children[j];
+            let text = key.value;
+            if(shiftPressed)
+            {
+                key.value = convertToDoubleConsonant(text);
+            }
+            else
+            {
+                key.value = convertToSingleConsonant(text);
+            }
+        }
+    }
+}
+
+function virtualKeyboardPressed(key)
+{
+    if(key === "Del") {
+        keyup({code: "Backspace"});
+    }
+    else if(key === "Enter") {
+        keyup({code: "Enter"});
+    }
+    else if(key === "Shift")
+    {
+        shiftPressed = !shiftPressed;
+        toggleKeyboardShift();
+
+    }
+    else{
         if(shiftPressed)
         {
-            key.innerHTML = convertToDoubleConsonant(text);
+            key = convertToDoubleConsonant(key);
         }
         else
         {
-            key.innerHTML = convertToSingleConsonant(text);
+            key = convertToSingleConsonant(key);
         }
+        keyup({code: "Key" + key, key: key});
     }
 }
 
@@ -281,6 +295,8 @@ function convertToDoubleConsonant(letter) {
         case "ㅂ": return "ㅃ";
         case "ㅅ": return "ㅆ";
         case "ㅈ": return "ㅉ";
+        case "ㅐ": return "ㅒ";
+        case "ㅔ": return "ㅖ";
         default: return letter;
     }
 }
@@ -292,6 +308,8 @@ function convertToSingleConsonant(letter) {
         case "ㅃ": return "ㅂ";
         case "ㅆ": return "ㅅ";
         case "ㅉ": return "ㅈ";
+        case "ㅒ": return "ㅐ";
+        case "ㅖ": return "ㅔ";
         default: return letter;
     }
 }
@@ -305,14 +323,13 @@ function isVowel(letter)
 
 function isRightVowel(letter)
 {
-    // if the letter is either ㅏ ㅑ ㅓ ㅕ ㅐ ㅔ ㅣ, it's a right vowel.
-    if (letter === 'ㅏ' || letter === 'ㅑ' || letter === 'ㅓ' || letter === 'ㅕ' || letter === 'ㅐ' || letter === 'ㅔ' || letter === 'ㅣ')
+    if(letter === 'ㅗ' || letter === 'ㅜ' || letter === 'ㅡ' || letter === 'ㅛ' || letter === 'ㅠ')
     {
-        return true;
+        return false;
     }
     else
     {
-        return false;
+        return true;
     }
 }
 
