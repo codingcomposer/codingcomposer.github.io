@@ -22,18 +22,18 @@ function initialize() {
     // 단어 길이(자모)
     disassembledWidth = Hangul.disassemble(word).length;
 
-    let spaceBetweenRects = 10;
+    let spaceBetweenRects = 5;
     
     let screenWidth = window.innerWidth;
-    squareSize = (screenWidth * 0.2) / width - spaceBetweenRects;
+    squareSize = (screenWidth * 0.15) / width - spaceBetweenRects;
     oneThirdSquare = squareSize / 3;
     twoThirdSquare = squareSize / 3 * 2;
     // find the element with the id board
     let board = document.getElementById('board');
     // set the height of the board
-    board.style.height = (height * squareSize + spaceBetweenRects * height + 20).toString() + 'px';
+    board.style.height = (height * squareSize + spaceBetweenRects * (height - 1) + 15).toString() + 'px';
     // set the width of the board
-    board.style.width = (width * squareSize + spaceBetweenRects * width + 20).toString() + 'px';
+    board.style.width = (width * squareSize + spaceBetweenRects * (width - 1) + 15).toString() + 'px';
     // draw the border of the board.
     board.style.border = '2px solid black';
     let jamoIndex = 0;
@@ -339,23 +339,57 @@ function update(disassembledStr)
     let rowElements = getRow(row);
     let disassembledAnswer = Hangul.disassemble(word);
     let disassembledWidth = disassembledStr.length;
-
+    let letterCount = {};
+    let brownIndexes = {};
+    // get letter count from the right answer
+    for(let i = 0; i < disassembledAnswer.length; i++)
+    {
+        let letter = disassembledAnswer[i];
+        if(letterCount[letter] === undefined)
+        {
+            letterCount[letter] = 1;
+        }
+        else
+        {
+            letterCount[letter]++;
+        }
+    }
     for (let c = 0; c < disassembledWidth; c++) {
-        
         let currTile = rowElements[c];
         let letter = disassembledStr[c];
-
         // At the right position
         if (disassembledAnswer[c] === letter) {
             // sets the color of the currTile as green.
             currTile.style.backgroundColor = "green";
+            letterCount[letter] = letterCount[letter] - 1;
+            console.log(letterCount[letter] + " " + letter);
             correct += 1;
         } // At the wrong position
         else if (disassembledAnswer.includes(letter)) {
-            // sets the color of the currTile as brown.
-            currTile.style.backgroundColor = "brown";
+            // if there isn't brownIndexes[letter]
+            if (!brownIndexes[letter]) {
+                brownIndexes[letter] = [];
+            }
+            brownIndexes[letter].push(c);
         } // Not in the answer
         else {
+            currTile.style.backgroundColor = "gray";
+        }
+    }
+    // 글자가 맞는데 위치가 틀렸으면서, 그 글자가 한번 더 나오는 경우, 타일을 브라운으로 바꿔준다.
+    for (let letter in brownIndexes) {
+        let indexes = brownIndexes[letter];
+        let count = letterCount[letter] < indexes.length ? letterCount[letter] : indexes.length;
+        console.log(letter + " " + count);
+        for (let i = 0; i < count; i++) {
+            let position = indexes[i];
+            let currTile = rowElements[position];
+            currTile.style.backgroundColor = "brown";
+        }
+        // 글자가 한번 더 나오지 않는 경우, 타일을 회색으로 바꿔준다.
+        for (let i = count; i < indexes.length; i++) {
+            let position = indexes[i];
+            let currTile = rowElements[position];
             currTile.style.backgroundColor = "gray";
         }
     }
