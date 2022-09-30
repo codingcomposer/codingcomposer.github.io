@@ -16,6 +16,10 @@ let shiftPressed = false;
 function initialize() {
     // get answer
     word = WORDS[Math.floor(Math.random() * WORDS.length)];
+    while(!ALL_WORDS.includes(word))
+    {
+        word = WORDS[Math.floor(Math.random() * WORDS.length)];
+    }
     console.log(word);
     // 단어 길이(조합된 한글)
     width = word.length;
